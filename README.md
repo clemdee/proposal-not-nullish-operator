@@ -1,60 +1,150 @@
-# template-for-proposals
+# Not-nullish `?` Operator
 
-A repository template for ECMAScript proposals.
+Champion: looking for one :)
 
-## Before creating a proposal
+Author: [@ClemDee](https://github.com/ClemDee)
 
-Please ensure the following:
-  1. You have read the [process document](https://tc39.github.io/process-document/)
-  1. You have reviewed the [existing proposals](https://github.com/tc39/proposals/)
-  1. You are aware that your proposal requires being a member of TC39, or locating a TC39 delegate to "champion" your proposal
+Status: 0 (strawperson)
 
-## Create your proposal repo
-
-Follow these steps:
-  1.  Click the green ["use this template"](https://github.com/tc39/template-for-proposals/generate) button in the repo header. (Note: Do not fork this repo in GitHub's web interface, as that will later prevent transfer into the TC39 organization)
-  1.  Go to your repo settings “Options” page, under “GitHub Pages”, and set the source to the **main branch** under the root (and click Save, if it does not autosave this setting)
-      1. check "Enforce HTTPS"
-      1. On "Options", under "Features", Ensure "Issues" is checked, and disable "Wiki", and "Projects" (unless you intend to use Projects)
-      1. Under "Merge button", check "automatically delete head branches"
-<!--
-  1.  Avoid merge conflicts with build process output files by running:
-      ```sh
-      git config --local --add merge.output.driver true
-      git config --local --add merge.output.driver true
-      ```
-  1.  Add a post-rewrite git hook to auto-rebuild the output on every commit:
-      ```sh
-      cp hooks/post-rewrite .git/hooks/post-rewrite
-      chmod +x .git/hooks/post-rewrite
-      ```
--->
-  3.  ["How to write a good explainer"][explainer] explains how to make a good first impression.
-
-      > Each TC39 proposal should have a `README.md` file which explains the purpose
-      > of the proposal and its shape at a high level.
-      >
-      > ...
-      >
-      > The rest of this page can be used as a template ...
-
-      Your explainer can point readers to the `index.html` generated from `spec.emu`
-      via markdown like
-
-      ```markdown
-      You can browse the [ecmarkup output](https://ACCOUNT.github.io/PROJECT/)
-      or browse the [source](https://github.com/ACCOUNT/PROJECT/blob/HEAD/spec.emu).
-      ```
-
-      where *ACCOUNT* and *PROJECT* are the first two path elements in your project's Github URL.
-      For example, for github.com/**tc39**/**template-for-proposals**, *ACCOUNT* is "tc39"
-      and *PROJECT* is "template-for-proposals".
+[Original TC39 thread](https://es.discourse.group/t/nullish-unary-operator/657)
 
 
-## Maintain your proposal repo
+## Goal
 
-  1. Make your changes to `spec.emu` (ecmarkup uses HTML syntax, but is not HTML, so I strongly suggest not naming it ".html")
-  1. Any commit that makes meaningful changes to the spec, should run `npm run build` and commit the resulting output.
-  1. Whenever you update `ecmarkup`, run `npm run build` and commit any changes that come from that dependency.
+The goal of this proposal is to simplify a very a common use case when handling _nullish_ values, which is **evaluating whether a variable is nullish or not**. This proposal aims to be in continuity with previous proposals `??`, `??=` and `?.`.
 
-  [explainer]: https://github.com/tc39/how-we-work/blob/HEAD/explainer.md
+The idea is to add the new `?` unary operator:
+
+```js
+if (?variableA) {
+  // do something if a is defined (i.e. not undefined or null)
+}
+```
+
+
+## Motivation
+
+Over the past years, several proposals have been made to add convenience for handling nullish values:
+- the **optional chaining** operator `?.`
+- the **nullish coalescing** operator `??`
+- the **logical nullish assignment** `??=`
+
+However, a use case is still missing, and yet, a very simple and common one: checking whether a variable is _nullish_ or not.
+
+For now, we would still have to write:
+
+```js
+if (variableA !== undefined && variableA !== null) {
+ // ...
+}
+```
+
+Or using the loose equality:
+
+```js
+if (variableA != null) {
+  // ...
+}
+```
+
+However, using loose equality is considered as a bad practise, as it is one of the most awkward feature of javascript. Even though linters can be configured to only allow loose equality when comparing with _null_ (and is a commonly used exception to this syntax), this feels "hack-y", for lack of better.
+
+Adding a dedicated syntax for this use case would also make the language less confusing for new-commers, and could hopefully lead to banning loose equality for good.
+
+
+## Proposal
+
+So the goal of the proposal is to add the **not-nullish** `?` unary operator:
+
+```
+if (?variableA) {
+  // do something if variableA is defined
+}
+```
+
+This would desugar to something like:
+
+```js
+function isDefined (variable) {
+  return variable !== undefined && variable !== null;
+}
+
+if (isDefined(variableA)) {
+  // do something if variableA is defined
+  // note that variableA was only evaluated once
+}
+```
+
+This new operator would improve both writability and readability compared to today available solutions.
+
+
+### Example use with other operators
+
+This operator combines really well with other operators of the langage:
+
+- We can easily evaluate if a variable is _not nullish_, combining this operator with the **logical not** `!` operator:
+
+```js
+if (!?varibleA) {
+  // do something if variableA is not nullish
+}
+```
+
+- This operator also goes really well along with the **optional chainning** `?.` operator:
+
+```js
+if (?myObj?.sub?.value) {
+  // do something if myObj, sub and value are not nullish
+}
+```
+
+
+### Operator precedence
+
+The [operator precedence](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Operator_Precedence#Table) should be at the same level than the **logical not** operator (level 17), with _left-to-right_ associativity.
+
+### Handling undeclared variables
+
+The `?` operator should not handle undeclared variables (like when using the `typeof` syntax: `typeof a === "undefined"`).
+Other nullish operators `??` and `?.` throw a _ReferenceError_ exception if the variable is not declared, so it should stay consistent.
+
+### Backward compatibility
+
+The proposed `?` operator should not break any previous code.
+
+While a `?` operator is already used for ternary condition `condition ? ifTrue : ifFalse`, as its syntax expects 3 members and a second `:` operator, there is not risk that it would be mistaken by Javascript engines / parsers.
+
+
+## Q&A:
+
+### Why not using a postfix operator, like the [existential operator](https://coffeescript.org/#existential-operator) in Coffeescript?
+
+Most operators in Javascript are prefix, and having this operator being suffix would lead to awkward syntaxes.  
+E.g. when checking if a variable is _not nullish_:
+
+```js
+if (!variableA?) { /* ... */ }
+```
+
+compared to the much cleaner prefix version:
+
+```js
+if (!?varibleA) { /* ... */ }
+```
+
+Also, the suffixe version could introduce [breaking changes](https://es.discourse.group/t/nullish-unary-operator/657/5).
+
+
+### [Yet another way](https://stackoverflow.com/questions/3390396/how-can-i-check-for-undefined-in-javascript) of checking undefined variables
+
+Indeed, there are already too many ways of checking for undefined variables. This proposal aims to become the preferred way to handle both _undefined_ and _nullish_ values, in a ES6+ spirit.  
+This could replace almost every existing ways of checking _undefined_: 
+
+- `variableA !== undefined && variableA !== null`
+- `variableA != null`
+- `variableA !== undefined`
+- `variableA !== void 0`
+
+However, this would not replace:
+- `typeof undeclaredVariable === "undefined"`
+

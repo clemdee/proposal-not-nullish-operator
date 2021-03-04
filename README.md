@@ -56,7 +56,7 @@ Adding a dedicated syntax for this use case would also make the language less co
 
 So the goal of the proposal is to add the **not-nullish** `?` unary operator:
 
-```
+```js
 if (?variableA) {
   // do something if variableA is defined
 }

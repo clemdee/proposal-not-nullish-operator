@@ -82,11 +82,11 @@ This new operator would improve both writability and readability compared to tod
 
 This operator combines really well with other operators of the langage:
 
-- We can easily evaluate if a variable is _not nullish_, combining this operator with the **logical not** `!` operator:
+- We can easily evaluate if a variable is _nullish_, combining this operator with the **logical not** `!` operator:
 
 ```js
 if (!?varibleA) {
-  // do something if variableA is not nullish
+  // do something if variableA is nullish
 }
 ```
 
@@ -120,7 +120,7 @@ While a `?` operator is already used for ternary condition `condition ? ifTrue :
 ### Why not using a postfix operator, like the [existential operator](https://coffeescript.org/#existential-operator) in Coffeescript?
 
 Most operators in Javascript are prefix, and having this operator being suffix would lead to awkward syntaxes.  
-E.g. when checking if a variable is _not nullish_:
+E.g. when checking if a variable is _nullish_:
 
 ```js
 if (!variableA?) { /* ... */ }
@@ -135,7 +135,7 @@ if (!?varibleA) { /* ... */ }
 Also, the suffixe version could introduce [breaking changes](https://es.discourse.group/t/nullish-unary-operator/657/5).
 
 
-### [Yet another way](https://stackoverflow.com/questions/3390396/how-can-i-check-for-undefined-in-javascript) of checking undefined variables
+### [Yet another way](https://stackoverflow.com/questions/3390396/how-can-i-check-for-undefined-in-javascript) of checking undefined variables?
 
 Indeed, there are already too many ways of checking for undefined variables. This proposal aims to become the preferred way to handle both _undefined_ and _nullish_ values, in a ES6+ spirit.  
 This could replace almost every existing ways of checking _undefined_: 

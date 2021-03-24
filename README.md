@@ -85,7 +85,7 @@ This operator combines really well with other operators of the langage:
 - We can easily evaluate if a variable is _nullish_, combining this operator with the **logical not** `!` operator:
 
 ```js
-if (!?varibleA) {
+if (!?variableA) {
   // do something if variableA is nullish
 }
 ```
@@ -102,6 +102,12 @@ if (?myObj?.sub?.value) {
 ### Operator precedence
 
 The [operator precedence](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Operator_Precedence#Table) should be at the same level than the **logical not** operator (level 17), with _left-to-right_ associativity.
+
+Also, using the `?` operator mutiple times in a row should be done using parentheses, else it will throw a syntax error:
+
+```js
+if (?(?variableA)) { /* ... */ }
+```
 
 ### Handling undeclared variables
 
@@ -129,7 +135,7 @@ if (!variableA?) { /* ... */ }
 compared to the much cleaner prefix version:
 
 ```js
-if (!?varibleA) { /* ... */ }
+if (!?variableA) { /* ... */ }
 ```
 
 Also, the suffixe version could introduce [breaking changes](https://es.discourse.group/t/nullish-unary-operator/657/5).

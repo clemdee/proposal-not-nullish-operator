@@ -9,22 +9,9 @@ Status: 0 (strawperson)
 [Original TC39 thread](https://es.discourse.group/t/nullish-unary-operator/657)
 
 
-## Goal
-
-The goal of this proposal is to simplify a very a common use case when handling _nullish_ values, which is **evaluating whether a variable is nullish or not**. This proposal aims to be in continuity with previous proposals `??`, `??=` and `?.`.
-
-The idea is to add the new `?` unary operator:
-
-```js
-if (?variableA) {
-  // do something if a is defined (i.e. not undefined or null)
-}
-```
-
-
 ## Motivation
 
-Over the past years, several proposals have been made to add convenience for handling nullish values:
+Over the past few years, several proposals have been made to ease the handling of nullish values:
 - the **optional chaining** operator `?.`
 - the **nullish coalescing** operator `??`
 - the **logical nullish assignment** `??=`
@@ -54,15 +41,15 @@ Adding a dedicated syntax for this use case would also make the language less co
 
 ## Proposal
 
-So the goal of the proposal is to add the **not-nullish** `?` unary operator:
+The goal of the proposal is to add the **not-nullish** `?` unary operator:
 
 ```js
 if (?variableA) {
-  // do something if variableA is defined
+  // do something if variableA is not nullish
 }
 ```
 
-This would desugar to something like:
+This could desugar to something like:
 
 ```js
 function isDefined (variable) {
@@ -70,7 +57,7 @@ function isDefined (variable) {
 }
 
 if (isDefined(variableA)) {
-  // do something if variableA is defined
+  // do something if variableA is not nullish
   // note that variableA was only evaluated once
 }
 ```
@@ -103,16 +90,20 @@ if (?myObj?.sub?.value) {
 
 The [operator precedence](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Operator_Precedence#Table) should be at the same level than the **logical not** operator (level 17), with _left-to-right_ associativity.
 
-Also, using the `?` operator mutiple times in a row should be done using parentheses, else it will throw a syntax error:
+Also, the `?` operator cannot be applied twice wihout parentheses or whitespace, as it would form a **nullish coalescing** `??` operator, and thus throw a syntax error:
 
 ```js
-if (?(?variableA)) { /* ... */ }
+if (??variableA) // Syntax Error
+if (?(?variableA)) // OK
+if (? ?variableA) // OK
 ```
+
+Note that applying this operator several times would not be very relevant, as it would always return `true` at the end.
 
 ### Handling undeclared variables
 
-The `?` operator should not handle undeclared variables (like when using the `typeof` syntax: `typeof a === "undefined"`).
-Other nullish operators `??` and `?.` throw a _ReferenceError_ exception if the variable is not declared, so it should stay consistent.
+The `?` operator should not handle undeclared variables (like when using the `typeof` syntax).
+Like other nullish operators, it should throw a _ReferenceError_ exception if the variable is not declared.
 
 ### Backward compatibility
 
@@ -121,29 +112,28 @@ The proposed `?` operator should not break any previous code.
 While a `?` operator is already used for ternary condition `condition ? ifTrue : ifFalse`, as its syntax expects 3 members and a second `:` operator, there is not risk that it would be mistaken by Javascript engines / parsers.
 
 
-## Q&A:
+## Considered alternatives
 
-### Why not using a postfix operator, like the [existential operator](https://coffeescript.org/#existential-operator) in Coffeescript?
+### Using a postfix operator
 
-Most operators in Javascript are prefix, and having this operator being suffix would lead to awkward syntaxes.  
+The idea of using a posfix operator was discussed, like the [existential operator](https://coffeescript.org/#existential-operator) in Coffeescript.
+However, most operators in Javascript are prefix, and having this one operator being suffix would lead to awkward syntaxes.  
 E.g. when checking if a variable is _nullish_:
 
 ```js
-if (!variableA?) { /* ... */ }
+if (!variableA?)
+// compared to the prefix version:
+if (!?variableA)
 ```
 
-compared to the much cleaner prefix version:
-
-```js
-if (!?variableA) { /* ... */ }
-```
-
-Also, the suffixe version could introduce [breaking changes](https://es.discourse.group/t/nullish-unary-operator/657/5).
+Also, the suffix version would be closer to the syntax of ternary conditions, potentially introducing [breaking changes](https://es.discourse.group/t/nullish-unary-operator/657/5).
 
 
-### [Yet another way](https://stackoverflow.com/questions/3390396/how-can-i-check-for-undefined-in-javascript) of checking undefined variables?
+## Concerns
 
-Indeed, there are already too many ways of checking for undefined variables. This proposal aims to become the preferred way to handle both _undefined_ and _nullish_ values, in a ES6+ spirit.  
+### Yet another way of checking undefined variables?
+
+Indeed, there are already [too many ways](https://stackoverflow.com/questions/3390396/how-can-i-check-for-undefined-in-javascript) of checking for undefined variables. This proposal aims to become the preferred way to handle both _undefined_ and _nullish_ values, in a ES6+ spirit.  
 This could replace almost every existing ways of checking _undefined_: 
 
 - `variableA !== undefined && variableA !== null`
@@ -151,6 +141,6 @@ This could replace almost every existing ways of checking _undefined_:
 - `variableA !== undefined`
 - `variableA !== void 0`
 
-However, this would not replace:
+But as it is not handling undeclared variables, it would not replace:
 - `typeof undeclaredVariable === "undefined"`
 

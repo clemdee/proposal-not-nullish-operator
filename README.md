@@ -1,4 +1,4 @@
-# Not-nullish `?` Operator
+# Non-nullish `?` Operator
 
 Champion: looking for one :)
 
@@ -41,7 +41,7 @@ Adding a dedicated syntax for this use case would also make the language less co
 
 ## Proposal
 
-The goal of the proposal is to add the **not-nullish** `?` unary operator:
+The goal of the proposal is to add the **non-nullish** `?` unary operator:
 
 ```js
 if (?variableA) {
@@ -143,4 +143,3 @@ This could replace almost every existing ways of checking _undefined_:
 
 But as it is not handling undeclared variables, it would not replace:
 - `typeof undeclaredVariable === "undefined"`
-

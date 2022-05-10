@@ -133,7 +133,7 @@ Also, the suffix version would be closer to the syntax of ternary conditions, po
 
 ### Yet another way of checking undefined variables?
 
-Indeed, there are already [too many ways](https://stackoverflow.com/questions/3390396/how-can-i-check-for-undefined-in-javascript) of checking for undefined variables. This proposal aims to become the preferred way to handle both _undefined_ and _nullish_ values, in a ES6+ spirit.  
+Indeed, there are already [too many ways](https://stackoverflow.com/questions/3390396/how-can-i-check-for-undefined-in-javascript) of checking for undefined variables. This proposal aims to become the preferred way to handle both _undefined_ and _null_ values, in a ES6+ spirit.  
 This could replace almost every existing ways of checking _undefined_: 
 
 - `variableA !== undefined && variableA !== null`

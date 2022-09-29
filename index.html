@@ -3,7 +3,7 @@
 <link rel="stylesheet" href="./spec.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
 <script src="./spec.js"></script>
-<title>Proposal Title Goes Here</title><script type="application/json" id="menu-search-biblio">[{"type":"clause","id":"sec-demo-clause","aoid":null,"title":"This is an emu-clause","titleHTML":"This is an emu-clause","number":"1","namespace":"<no location>","location":"","referencingIds":[],"key":"This is an emu-clause"},{"type":"clause","id":"sec-copyright-and-software-license","aoid":null,"title":"Copyright & Software License","titleHTML":"Copyright &amp; Software License","number":"A","namespace":"<no location>","location":"","referencingIds":[],"key":"Copyright & Software License"}]</script><script>"use strict";
+<title>Non-nullish operator</title><script type="application/json" id="menu-search-biblio">[{"type":"production","id":"prod-UnaryExpression","name":"UnaryExpression","referencingIds":["_ref_1","_ref_2","_ref_3","_ref_4","_ref_5","_ref_6","_ref_7","_ref_8","_ref_9","_ref_10"],"namespace":"<no location>","location":"","key":"UnaryExpression"},{"type":"clause","id":"sec-unary-expression","aoid":null,"title":"This is an emu-clause","titleHTML":"This is an emu-clause","number":"1","namespace":"<no location>","location":"","referencingIds":[],"key":"This is an emu-clause"},{"type":"clause","id":"sec-non-nullish-operator-runtime-semantic-evaluation","aoid":null,"title":"Runtime semantics: Evaluation","titleHTML":"Runtime semantics: Evaluation","number":"2","namespace":"<no location>","location":"","referencingIds":[],"key":"Runtime semantics: Evaluation"},{"type":"clause","id":"sec-copyright-and-software-license","aoid":null,"title":"Copyright & Software License","titleHTML":"Copyright &amp; Software License","number":"A","namespace":"<no location>","location":"","referencingIds":[],"key":"Copyright & Software License"}]</script><script>"use strict";
 
 function Search(menu) {
   this.menu = menu;
@@ -1851,17 +1851,69 @@ li.menu-search-result-term:before {
     display: none; 
   }
 }
-</style></head><body><div id="menu-toggle">☰</div><div id="menu-spacer"></div><div id="menu"><div id="menu-search"><input type="text" id="menu-search-box" placeholder="Search..."><div id="menu-search-results" class="inactive"></div></div><div id="menu-pins"><div class="menu-pane-header">Pins</div><ul id="menu-pins-list"></ul></div><div class="menu-pane-header">Table of Contents</div><div id="menu-toc"><ol class="toc"><li><span class="item-toggle-none"></span><a href="#sec-demo-clause" title="This is an emu-clause"><span class="secnum">1</span> This is an emu-clause</a></li><li><span class="item-toggle-none"></span><a href="#sec-copyright-and-software-license" title="Copyright &amp; Software License"><span class="secnum">A</span> Copyright &amp; Software License</a></li></ol></div></div><div id="spec-container"><h1 class="version first">Stage -1 Draft / May 10, 2022</h1><h1 class="title">Proposal Title Goes Here</h1>
+</style></head><body><div id="menu-toggle">☰</div><div id="menu-spacer"></div><div id="menu"><div id="menu-search"><input type="text" id="menu-search-box" placeholder="Search..."><div id="menu-search-results" class="inactive"></div></div><div id="menu-pins"><div class="menu-pane-header">Pins</div><ul id="menu-pins-list"></ul></div><div class="menu-pane-header">Table of Contents</div><div id="menu-toc"><ol class="toc"><li><span class="item-toggle-none"></span><a href="#sec-unary-expression" title="This is an emu-clause"><span class="secnum">1</span> This is an emu-clause</a></li><li><span class="item-toggle-none"></span><a href="#sec-non-nullish-operator-runtime-semantic-evaluation" title="Runtime semantics: Evaluation"><span class="secnum">2</span> Runtime semantics: Evaluation</a></li><li><span class="item-toggle-none"></span><a href="#sec-copyright-and-software-license" title="Copyright &amp; Software License"><span class="secnum">A</span> Copyright &amp; Software License</a></li></ol></div></div><div id="spec-container"><h1 class="version first">Stage 0 Draft / September 29, 2022</h1><h1 class="title">Non-nullish operator</h1>
 
-<emu-clause id="sec-demo-clause">
+<emu-clause id="sec-unary-expression">
   <h1><span class="secnum">1</span> This is an emu-clause</h1>
-  <p>This is an algorithm:</p>
-  <emu-alg><ol><li>Let <var>proposal</var> be <emu-val>undefined</emu-val>.</li><li>If IsAccepted(<var>proposal</var>),<ol><li>Let <var>stage</var> be <emu-val>0</emu-val>.</li></ol></li><li>Else,<ol><li>Let <var>stage</var> be <emu-val>-1</emu-val>.</li></ol></li><li>Return ?&nbsp;<emu-xref aoid="ToString" id="_ref_0"><a href="https://tc39.es/ecma262/#sec-tostring">ToString</a></emu-xref>(<var>proposal</var>).</li></ol></emu-alg>
+  <h2>Syntax</h2>
+  <emu-grammar type="definition"><emu-production name="UnaryExpression" params="Yield, Await" id="prod-UnaryExpression">
+    <emu-nt params="Yield, Await"><a href="#prod-UnaryExpression">UnaryExpression</a><emu-mods><emu-params>[Yield, Await]</emu-params></emu-mods></emu-nt> <emu-geq>:</emu-geq> <emu-rhs a="lrh_izya">
+        <emu-nt params="?Yield, ?Await"><a href="https://tc39.es/ecma262/#prod-asi-rules-UpdateExpression">UpdateExpression</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt>
+    </emu-rhs>
+    <emu-rhs a="qh6tas2i">
+        <emu-t>delete</emu-t>
+        <emu-nt params="?Yield, ?Await" id="_ref_1"><a href="#prod-UnaryExpression">UnaryExpression</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt>
+    </emu-rhs>
+    <emu-rhs a="d3t3dyzd">
+        <emu-t>void</emu-t>
+        <emu-nt params="?Yield, ?Await" id="_ref_2"><a href="#prod-UnaryExpression">UnaryExpression</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt>
+    </emu-rhs>
+    <emu-rhs a="atfv1ezt">
+        <emu-t>typeof</emu-t>
+        <emu-nt params="?Yield, ?Await" id="_ref_3"><a href="#prod-UnaryExpression">UnaryExpression</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt>
+    </emu-rhs>
+    <emu-rhs a="1zx-fkm3">
+        <emu-t>+</emu-t>
+        <emu-nt params="?Yield, ?Await" id="_ref_4"><a href="#prod-UnaryExpression">UnaryExpression</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt>
+    </emu-rhs>
+    <emu-rhs a="lehvx30i">
+        <emu-t>-</emu-t>
+        <emu-nt params="?Yield, ?Await" id="_ref_5"><a href="#prod-UnaryExpression">UnaryExpression</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt>
+    </emu-rhs>
+    <emu-rhs a="mvwftuyy">
+        <emu-t>~</emu-t>
+        <emu-nt params="?Yield, ?Await" id="_ref_6"><a href="#prod-UnaryExpression">UnaryExpression</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt>
+    </emu-rhs>
+    <emu-rhs a="cm7fnuig">
+        <emu-t>!</emu-t>
+        <emu-nt params="?Yield, ?Await" id="_ref_7"><a href="#prod-UnaryExpression">UnaryExpression</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt>
+    </emu-rhs>
+    <ins><emu-rhs a="bgbcespm">
+        <emu-t>?</emu-t>
+        <emu-nt params="?Yield, ?Await" id="_ref_8"><a href="#prod-UnaryExpression">UnaryExpression</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt>
+    </emu-rhs></ins>
+    <emu-rhs a="dfqdbsrx" constraints="+Await"><emu-constraints>[+Await]</emu-constraints>
+        <emu-nt params="?Yield"><a href="https://tc39.es/ecma262/#prod-AwaitExpression">AwaitExpression</a><emu-mods><emu-params>[?Yield]</emu-params></emu-mods></emu-nt>
+    </emu-rhs>
+</emu-production>
+</emu-grammar>
+</emu-clause>
+
+<emu-clause id="sec-non-nullish-operator-runtime-semantic-evaluation">
+  <h1><span class="secnum">2</span> Runtime semantics: Evaluation</h1>
+  
+  <emu-grammar><ins><emu-production name="UnaryExpression" collapsed="">
+    <emu-nt><a href="#prod-UnaryExpression">UnaryExpression</a></emu-nt> <emu-geq>:</emu-geq> <emu-rhs a="1lzwwxvc">
+        <emu-nt id="_ref_9"><a href="#prod-UnaryExpression">UnaryExpression</a></emu-nt>
+    </emu-rhs>
+</emu-production></ins>
+</emu-grammar>
+  <emu-alg><ol><li><ins>Let <var>expr</var> be the result of evaluating <emu-nt id="_ref_10"><a href="#prod-UnaryExpression">UnaryExpression</a></emu-nt>.</ins></li><li><ins>Let <var>oldValue</var> be ?&nbsp;<emu-xref aoid="GetValue" id="_ref_0"><a href="https://tc39.es/ecma262/#sec-getvalue">GetValue</a></emu-xref>(<var>expr</var>).</ins></li><li><ins>If <var>oldValue</var> is <emu-val>undefined</emu-val> or <emu-val>null</emu-val>, return <emu-val>false</emu-val>.</ins></li><li><ins>Return <emu-val>true</emu-val>.</ins></li></ol></emu-alg>
 </emu-clause><emu-annex id="sec-copyright-and-software-license">
       <h1><span class="secnum">A</span> Copyright &amp; Software License</h1>
       
       <h2>Copyright Notice</h2>
-      <p>© 2022 Your Name(s) Here</p>
+      <p>© 2022 clemdee</p>
 
       <h2>Software License</h2>
       <p>All Software contained in this document ("Software") is protected by copyright and is being made available under the "BSD License", included below. This Software may be subject to third party rights (rights from parties other than Ecma International), including patent rights, and no licenses under such third party rights are granted under this license even if the third party concerned is a member of Ecma International. SEE THE ECMA CODE OF CONDUCT IN PATENT MATTERS AVAILABLE AT https://ecma-international.org/memento/codeofconduct.htm FOR INFORMATION REGARDING THE LICENSING OF PATENT CLAIMS THAT ARE REQUIRED TO IMPLEMENT ECMA INTERNATIONAL STANDARDS.</p>

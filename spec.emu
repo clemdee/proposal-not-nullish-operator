@@ -4,20 +4,37 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
 <script src="./spec.js"></script>
 <pre class="metadata">
-title: Proposal Title Goes Here
-stage: -1
-contributors: Your Name(s) Here
+title: Non-nullish operator
+stage: 0
+contributors: clemdee
 </pre>
 
-<emu-clause id="sec-demo-clause">
+<emu-clause id="sec-unary-expression">
   <h1>This is an emu-clause</h1>
-  <p>This is an algorithm:</p>
+  <h2>Syntax</h2>
+  <emu-grammar type="definition">
+    UnaryExpression[Yield, Await] :
+      UpdateExpression[?Yield, ?Await]
+      `delete` UnaryExpression[?Yield, ?Await]
+      `void` UnaryExpression[?Yield, ?Await]
+      `typeof` UnaryExpression[?Yield, ?Await]
+      `+` UnaryExpression[?Yield, ?Await]
+      `-` UnaryExpression[?Yield, ?Await]
+      `~` UnaryExpression[?Yield, ?Await]
+      `!` UnaryExpression[?Yield, ?Await]
+      <ins>`?` UnaryExpression[?Yield, ?Await]</ins>
+      [+Await] AwaitExpression[?Yield]
+  </emu-grammar>
+</emu-clause>
+
+<emu-clause id="sec-non-nullish-operator-runtime-semantic-evaluation">
+  <h1>Runtime semantics: Evaluation</h1>
+  
+  <emu-grammar><ins>UnaryExpression : ? UnaryExpression</ins></emu-grammar>
   <emu-alg>
-    1. Let _proposal_ be *undefined*.
-    1. If IsAccepted(_proposal_),
-      1. Let _stage_ be *0*.
-    1. Else,
-      1. Let _stage_ be *-1*.
-    1. Return ? ToString(_proposal_).
+    1. <ins>Let _expr_ be the result of evaluating |UnaryExpression|.</ins>
+    1. <ins>Let _oldValue_ be ? GetValue(_expr_).</ins>
+    1. <ins>If _oldValue_ is *undefined* or *null*, return *false*.</ins>
+    1. <ins>Return *true*.</ins>
   </emu-alg>
 </emu-clause>
